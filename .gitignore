@@ -1,0 +1,43 @@
+logs
+*.log
+
+# dotenv environment variables file
+.env
+.env.test
+
+# JetBrains
+.idea
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode-test
+.vscode/*
+
+# Editor directories and files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+$RECYCLE.BIN/
+
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Authorization sessions.
+sessions/
+
+# Local settings
+static
+data

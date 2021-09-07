@@ -1,0 +1,35 @@
+package {{.Package}}
+
+type IService interface {
+CreateMany([]*models.{{.Model}}) error
+UpsertMany([]*models.{{.Model}}) error
+DeleteMany([]string) error
+}
+
+type IRepository interface {
+createMany([]*models.{{.Model}}) error
+upsertMany([]*models.{{.Model}}) error
+deleteMany([]string) error
+}
+
+type Service struct {
+repository IRepository
+}
+
+type Repository struct {
+db  *bun.DB
+ctx context.Context
+}
+
+func CreateService(db *bun.DB) *Service {
+repo := NewRepository(db)
+return NewService(repo)
+}
+
+func NewService(repository IRepository) *Service {
+return &Service{repository: repository}
+}
+
+func NewRepository(db *bun.DB) *Repository {
+return &Repository{db: db, ctx: context.Background()}
+}
