@@ -4,6 +4,7 @@ logs
 # dotenv environment variables file
 .env
 .env.test
+.projects.json
 
 # JetBrains
 .idea
