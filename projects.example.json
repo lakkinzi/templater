@@ -1,3 +1,15 @@
-{
-  "project" : {}
-}
+[
+  {
+    "name": "tsr",
+    "server" : {
+      "path": "/path",
+      "models": "/models",
+      "api": "/handlers",
+      "routing": "/routing",
+      "formatCommand": {
+        "command": "/fullPathCommand",
+        "params": ["firstFlag", "/path"]
+      }
+    }
+  }
+]

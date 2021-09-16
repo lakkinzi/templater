@@ -12,7 +12,7 @@ endif
 full_migrate: drop_database migrate_init migrate seed
 
 test:
-	go run *.go -name=${name}
+	go run *.go -name=${name} -project=${project}
 
 #
 #migrate_init:

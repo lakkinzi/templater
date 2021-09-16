@@ -3,6 +3,7 @@ package connect
 import (
 	"database/sql"
 	"fmt"
+
 	"github.com/uptrace/bun/extra/bundebug"
 
 	"github.com/uptrace/bun"

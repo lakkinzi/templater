@@ -1,11 +1,10 @@
 package templatesFabrics
 
 import (
-
-"log"
-"strings"
-"templater/nameBuilder"
-"text/template"
+	"log"
+	"strings"
+	"templater/nameBuilder"
+	"text/template"
 )
 
 type Data struct {

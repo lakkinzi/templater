@@ -1,22 +1,18 @@
 package main
 
 import (
-	"fmt"
+	"templater/config"
+	"templater/nameBuilder"
 )
 
 func main() {
-	flags := ParseFlags()
-	project := CreateProject(flags.Name)
-	fmt.Println(*project.ServerPath)
-	//switch *mode {
-	//case "model":
-	//	doActionModel(action, names)
-	//case "api":
-	//	doActionApi(action, names)
-	//case "service":
-	//	doActionService(action, names)
-	//}
-	//
+	flags := config.ParseFlags()
+	project := CreateProject(flags.Project)
+	//fmt.Println(*flags.Name, *flags.Project)
+	names := nameBuilder.GetNames(flags.Name)
+	project.CreateApi(names)
+	project.Format()
+
 	//db := getDb()
 	//defer db.Close()
 	//var migrator *migrate.Migrator
@@ -57,17 +53,7 @@ func main() {
 //	writeFile(path, model.Fabric(names))
 //}
 //
-//func writeFile(path string, data *string) {
-//	file, err := os.Create(path)
-//	if err != nil {
-//		log.Fatal(err)
-//	}
-//	defer file.Close()
-//	_, err = file.WriteString(*data)
-//	if err != nil {
-//		log.Fatal(err)
-//	}
-//}
+
 //
 //func getDb() *bun.DB {
 //	conf, err := config.LoadConfig()
