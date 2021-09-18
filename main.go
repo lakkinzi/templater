@@ -1,17 +1,18 @@
 package main
 
 import (
-	"templater/config"
-	"templater/nameBuilder"
+	"templater/cli"
+	"templater/models"
 )
 
 func main() {
-	flags := config.ParseFlags()
-	project := CreateProject(flags.Project)
-	//fmt.Println(*flags.Name, *flags.Project)
-	names := nameBuilder.GetNames(flags.Name)
-	project.CreateApi(names)
-	project.Format()
+	opt := cli.GetOptions()
+	project := models.CreateProject(opt)
+	project.DoWork(opt.Name)
+	////fmt.Println(*flags.Name, *flags.Project)
+	//names := nameBuilder.GetNames(flags.Name)
+	//project.CreateApi(names)
+	//project.Format()
 
 	//db := getDb()
 	//defer db.Close()
