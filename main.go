@@ -2,13 +2,11 @@ package main
 
 import (
 	"templater/cli"
-	"templater/models"
 )
 
 func main() {
-	opt := cli.GetOptions()
-	project := models.CreateProject(opt)
-	project.DoWork(opt.Name)
+	project := cli.GetOptions()
+	project.DoWorks()
 	////fmt.Println(*flags.Name, *flags.Project)
 	//names := nameBuilder.GetNames(flags.Name)
 	//project.CreateApi(names)

@@ -4,8 +4,13 @@ import (
     "github.com/google/uuid"
 )
 
-type {{.Model}} struct {
-    bun.BaseModel   `bun:"{{.Snake}},alias:{{.Snake}}"`
+type {{.Model.Names.PascalSingular}} struct {
+    bun.BaseModel   `bun:"{{.Model.Names.SnakePlural}},alias:{{.Model.Names.SnakePlural}}"`
     ID         uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()" json:"id" `
     Name       string    `json:"name"`
+    {{ range .Model.Properties }}
+        {{.Names.PascalSingular}} string `json:"{{.Names.CamelSingular}}"`
+    {{end}}
 }
+
+type {{.Model.Names.PascalPlural}} []*{{.Model.Names.PascalSingular}}

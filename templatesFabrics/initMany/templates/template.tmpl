@@ -1,14 +1,14 @@
-package {{.Package}}
+package {{.Model.Names.PascalSingular}}
 
 type IService interface {
-CreateMany([]*models.{{.Model}}) error
-UpsertMany([]*models.{{.Model}}) error
+CreateMany([]*models.{{.Model.Names.PascalPlural}}) error
+UpsertMany([]*models.{{.Model.Names.PascalPlural}}) error
 DeleteMany([]string) error
 }
 
 type IRepository interface {
-createMany([]*models.{{.Model}}) error
-upsertMany([]*models.{{.Model}}) error
+createMany([]*models.{{.Model.Names.PascalPlural}}) error
+upsertMany([]*models.{{.Model.Names.PascalPlural}}) error
 deleteMany([]string) error
 }
 

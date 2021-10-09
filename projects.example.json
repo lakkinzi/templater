@@ -1,11 +1,15 @@
 [
   {
     "name": "tsr",
+    "jsonCase": "ca",
     "server" : {
       "path": "/path",
       "models": "/models",
       "api": "/handlers",
       "routing": "/routing",
+      "works": {
+
+      },
       "formatCommand": {
         "command": "/fullPathCommand",
         "params": ["firstFlag", "/path"]

@@ -1,23 +1,23 @@
-package {{.Package}}
+package {{.Model.Names.CamelSingular}}
 
 func (r *Repository) getDB() *bun.DB {
 return r.db
 }
 
-func (r *Repository) createMany(items []*models.{{.Model}}) (err error) {
+func (r *Repository) createMany(items []*models.{{.Model.Names.PascalPlural}}) (err error) {
 _, err = r.db.NewInsert().Model(&items).Exec(r.ctx)
 return err
 }
 
 func (r *Repository) deleteMany(idPool []string) (err error) {
 _, err = r.db.NewDelete().
-Model((*models.{{.Model}})(nil)).
+Model((*models.{{.Model.Names.PascalSingular}})(nil)).
 Where("id IN (?)", bun.In(idPool)).
 Exec(r.ctx)
 return err
 }
 
-func (r *Repository) upsertMany(items []*models.{{.Model}}) (err error) {
+func (r *Repository) upsertMany(items []*models.{{.Model.Names.PascalPlural}}) (err error) {
 _, err = r.db.NewInsert().On("conflict (id) do update").
 Set("id = EXCLUDED.id").
 Model(&items).

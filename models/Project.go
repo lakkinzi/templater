@@ -5,18 +5,18 @@ import (
 	"errors"
 	"log"
 	"templater/helpers"
-	"templater/nameBuilder"
 )
 
 type Project struct {
-	Name   *string `json:"name"`
-	Mode   Mode
-	Server *Server `json:"server"`
+	Name    *string `json:"name"`
+	Mode    Mode
+	Builder *Builder
+	Modules Modules `json:"modules"`
 }
 
 type Projects []*Project
 
-func CreateProject(opt *Options) *Project {
+func CreateProject(name *string) *Project {
 	projects := Projects{}
 	err := json.Unmarshal(helpers.ReadJson(), &projects)
 	if err != nil {
@@ -24,10 +24,8 @@ func CreateProject(opt *Options) *Project {
 	}
 	project := Project{}
 	for _, proj := range projects {
-		if *proj.Name == opt.ProjectName {
+		if *proj.Name == *name {
 			project = *proj
-			project.Mode = opt.Mode
-			project.Server.ServerOperations = &opt.Operations.ServerOperations
 			return &project
 		}
 	}
@@ -35,10 +33,8 @@ func CreateProject(opt *Options) *Project {
 	return nil
 }
 
-func (p *Project) DoWork(name *nameBuilder.NameFormats) {
-	if p.Mode == Builder {
-		p.Server.build(name)
-	}
+func (p *Project) DoWorks() {
+	p.Modules.Build(p.Builder)
 }
 
 func (p *Project) migrate() {

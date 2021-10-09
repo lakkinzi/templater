@@ -1,31 +1,31 @@
-package {{.Package}}
+package {{.Model.Names.CamelSingular}}
 
 func (r *Repository) getDB() *bun.DB {
 return r.db
 }
 
-func (r *Repository) create(item *models.{{.Model}}) (err error) {
+func (r *Repository) create(item *models.{{.Model.Names.PascalSingular}}) (err error) {
 _, err = r.db.NewInsert().Model(item).Exec(r.ctx)
 return err
 }
 
-func (r *Repository) getAll() (items []*models.{{.Model}}, err error) {
+func (r *Repository) getAll() (items []*models.{{.Model.Names.PascalPlural}}, err error) {
 err = r.db.NewSelect().Model(&items).Scan(r.ctx)
 return items, err
 }
 
-func (r *Repository) get(id *string) (*models.{{.Model}}, error) {
-item := models.{{.Model}}{}
+func (r *Repository) get(id *string) (*models.{{.Model.Names.PascalSingular}}, error) {
+item := models.{{.Model.Names.PascalSingular}}{}
 err := r.db.NewSelect().Model(&item).Where("id = ?", *id).Scan(r.ctx)
 return &item, err
 }
 
 func (r *Repository) delete(id *string) (err error) {
-_, err = r.db.NewDelete().Model(&models.{{.Model}}{}).Where("id = ?", *id).Exec(r.ctx)
+_, err = r.db.NewDelete().Model(&models.{{.Model.Names.PascalSingular}}{}).Where("id = ?", *id).Exec(r.ctx)
 return err
 }
 
-func (r *Repository) update(item *models.{{.Model}}) (err error) {
+func (r *Repository) update(item *models.{{.Model.Names.PascalPlural}}) (err error) {
 _, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 return err
 }

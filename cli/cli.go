@@ -1,54 +1,37 @@
 package cli
 
 import (
-	"fmt"
 	"github.com/AlecAivazis/survey/v2"
 	"log"
-	"templater/config"
 	"templater/models"
-	"templater/nameBuilder"
 )
 
-func GetOptions() *models.Options {
-	options := models.Options{}
-	err := survey.AskOne(getProjectName(), &options.ProjectName)
-	if err != nil {
-		log.Fatal(err)
+func GetOptions() *models.Project {
+	project := models.CreateProject(writeProjectName())
+	writeModel(project)
+	for i := range project.Modules {
+		writeWorks(project.Modules[i])
 	}
-	mode := ""
-	err = survey.AskOne(getMode(), &mode)
-	if err != nil {
-		log.Fatal(err)
-	}
-	options.Mode = models.WriteMode(mode)
-	if options.Mode == models.Builder {
-		name := ""
-		err = survey.AskOne(getName(), &name)
-		options.Name = nameBuilder.GetNames(&name)
-
-		var operations []string
-		err = survey.AskOne(getServerBuildOperations(), &operations)
-		fmt.Println(operations)
-		options.Operations.ServerOperations.ServerBuildOperations = models.StringsToServerBuildOperations(operations)
-		if err != nil {
-			log.Fatal(err)
+	for {
+		if !addOnceMorePropertyToModel() {
+			break
 		}
+		prop := models.Property{}
+		writePropertyName(&prop)
+		writePropertyValueType(&prop)
+		project.Builder.Data.Model.Properties = append(project.Builder.Data.Model.Properties, &prop)
 	}
-	return &options
+	return project
 }
 
-func getName() *survey.Input {
-	return &survey.Input{Message: "Choose entiry name:"}
-}
-
-func getProjectName() *survey.Select {
-	return &survey.Select{Message: "Choose Project:", Options: config.GetProjectsNames()}
-}
-
-func getServerBuildOperations() *survey.MultiSelect {
-	return &survey.MultiSelect{Message: "Choose Server operations:", Options: models.GetServerBuildOperations()}
-}
-
-func getMode() *survey.Select {
-	return &survey.Select{Message: "Choose mode:", Options: models.GetModels()}
+func addOnceMorePropertyToModel() bool {
+	add := false
+	prompt := &survey.Confirm{
+		Message: "Add property?",
+	}
+	err := survey.AskOne(prompt, &add)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return add
 }

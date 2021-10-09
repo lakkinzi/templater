@@ -1,13 +1,13 @@
-package {{.Package}}
+package {{.Model.Names.CamelSingular}}
 
-func (s *Service) CreateMany(items []*models.{{.Model}}) error {
+func (s *Service) CreateMany(items []*models.{{.Model.Names.PascalSingular}}) error {
 if len(items) == 0 {
 return nil
 }
 return s.repository.createMany(items)
 }
 
-func (s *Service) UpsertMany(items []*models.{{.Model}}) error {
+func (s *Service) UpsertMany(items []*models.{{.Model.Names.PascalSingular}}) error {
 if len(items) == 0 {
 return nil
 }

@@ -1,11 +1,11 @@
-package {{.Package}}
+package {{.Model.Names.CamelSingular}}
 
 
-func (s *Service) Create(item *models.{{.Model}}) error {
+func (s *Service) Create(item *models.{{.Model.Names.PascalSingular}}) error {
 return s.repository.create(item)
 }
 
-func (s *Service) GetAll() ([]*models.{{.Model}}, error) {
+func (s *Service) GetAll() ([]*models.{{.Model.Names.PascalPlural}}, error) {
 items, err := s.repository.getAll()
 if err != nil {
 return nil, err
@@ -13,7 +13,7 @@ return nil, err
 return items, nil
 }
 
-func (s *Service) Get(id *string) (*models.{{.Model}}, error) {
+func (s *Service) Get(id *string) (*models.{{.Model.Names.PascalSingular}}, error) {
 item, err := s.repository.get(id)
 if err != nil {
 return nil, err
@@ -21,7 +21,7 @@ return nil, err
 return item, nil
 }
 
-func (s *Service) Update(item *models.{{.Model}}) error {
+func (s *Service) Update(item *models.{{.Model.Names.PascalSingular}}) error {
 return s.repository.update(item)
 }
 

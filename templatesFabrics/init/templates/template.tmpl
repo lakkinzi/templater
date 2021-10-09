@@ -1,11 +1,4 @@
-package {{.Package}}
-
-import (
-"context"
-"github.com/gin-gonic/gin"
-"github.com/uptrace/bun"
-"mdgkb/tsr-tegister-server-v1/models"
-)
+package {{.Model.Names.CamelSingular}}
 
 type IHandler interface {
 GetAll(c *gin.Context) error
@@ -16,18 +9,18 @@ Delete(c *gin.Context) error
 }
 
 type IService interface {
-GetAll() ([]*models.{{.Model}}, error)
-Get(*string) (*models.{{.Model}}, error)
-Create(*models.{{.Model}}) error
-Update(*models.{{.Model}}) error
+GetAll() ([]*models.{{.Model.Names.PascalPlural}}, error)
+Get(*string) (*models.{{.Model.Names.PascalSingular}}, error)
+Create(*models.{{.Model.Names.PascalSingular}}) error
+Update(*models.{{.Model.Names.PascalSingular}}) error
 Delete(*string) error
 }
 
 type IRepository interface {
-create(*models.{{.Model}}) error
-getAll() ([]*models.{{.Model}}, error)
-get(*string) (*models.{{.Model}}, error)
-update(*models.{{.Model}}) error
+create(*models.{{.Model.Names.PascalSingular}}) error
+getAll() ([]*models.{{.Model.Names.PascalPlural}}, error)
+get(*string) (*models.{{.Model.Names.PascalSingular}}, error)
+update(*models.{{.Model.Names.PascalSingular}}) error
 delete(*string) error
 }
 

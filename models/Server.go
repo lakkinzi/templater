@@ -1,89 +1,73 @@
 package models
 
 import (
-	"fmt"
 	"log"
-	"os"
 	"os/exec"
-	"templater/helpers"
-	"templater/nameBuilder"
-	"templater/templatesFabrics/handler"
-	initFabric "templater/templatesFabrics/init"
-	"templater/templatesFabrics/initMany"
-	"templater/templatesFabrics/model"
-	"templater/templatesFabrics/repository"
-	"templater/templatesFabrics/repositoryMany"
-	"templater/templatesFabrics/routing"
-	"templater/templatesFabrics/service"
-	"templater/templatesFabrics/serviceMany"
 )
 
-type Server struct {
-	Path             *string  `json:"path"`
-	Models           *string  `json:"models"`
-	Api              *string  `json:"api"`
-	Routing          *string  `json:"routing"`
-	FormatCommand    *Command `json:"formatCommand"`
-	ServerOperations *ServerOperations
+type Module struct {
+	Path          *string  `json:"path"`
+	FormatCommand *Command `json:"formatCommand"`
+	Works         Works    `json:"works"`
+	ActualWorks   []string
 }
 
-func (s *Server) build(name *nameBuilder.NameFormats) {
-	for _, operation := range s.ServerOperations.ServerBuildOperations {
-		if operation == CreateModel {
-			s.createModel(name)
-		}
-		if operation == CreateApi {
-			s.createApi(name)
-		}
-		if operation == CreateRouting {
-			s.createRouting(name)
-		}
-		if operation == CreateServiceMany {
-			s.createManyService(name)
-		}
+type Modules []*Module
+
+func (modules Modules) Build(builder *Builder) {
+	for i := range modules {
+		modules[i].build(builder)
 	}
+}
+
+func (s *Module) build(builder *Builder) {
+	s.Works.Build(builder, s.Path)
 	s.Format()
 }
 
-func (s *Server) createModel(name *nameBuilder.NameFormats) {
-	res := model.Fabric(name)
-	path := fmt.Sprintf("%s/%s/%s.go", *s.Path, *s.Models, *name.PascalCase)
-	helpers.WriteFile(path, res)
+func (s *Module) setWorks(builder *Builder) {
+	s.Format()
 }
 
-// CreateApi func
-func (s *Server) createApi(names *nameBuilder.NameFormats) {
-	apiPath := fmt.Sprintf("%s/%s/%s", *s.Path, *s.Api, *names.CamelCase)
-	err := os.Mkdir(apiPath, os.ModePerm)
-	if err != nil {
-		log.Fatal(err)
-	}
-	helpers.WriteFile(fmt.Sprintf("%s/init.go", apiPath), initFabric.Fabric(names))
-	helpers.WriteFile(fmt.Sprintf("%s/handler.go", apiPath), handler.Fabric(names))
-	helpers.WriteFile(fmt.Sprintf("%s/service.go", apiPath), service.Fabric(names))
-	helpers.WriteFile(fmt.Sprintf("%s/repository.go", apiPath), repository.Fabric(names))
+//func (s *Module) createModel(builder *Builder) {
+//	path := fmt.Sprintf("%s/%s/%s.go", *s.Path, *s.Models, *builder.Data.Model.Names.Pascal)
+//	builder.Build(config.GetTemplatePath("model"), path)
+//}
+//
+//// CreateApi func
+//func (s *Server) createApi(builder *Builder) {
+//	apiPath := fmt.Sprintf("%s/%s/%s", *s.Path, *s.Api, *builder.Data.Model.Names.Camel)
+//	err := os.Mkdir(apiPath, os.ModePerm)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	builder.Build(config.GetTemplatePath("init"), fmt.Sprintf("%s/init.go", apiPath))
+//	builder.Build(config.GetTemplatePath("handler"), fmt.Sprintf("%s/handler.go", apiPath))
+//	builder.Build(config.GetTemplatePath("service"), fmt.Sprintf("%s/service.go", apiPath))
+//	builder.Build(config.GetTemplatePath("repository"), fmt.Sprintf("%s/repository.go", apiPath))
+//}
+//
+//func (s *Server) createRouting(builder *Builder) {
+//	routingPath := fmt.Sprintf("%s/%s/%s", *s.Path, *s.Routing, *builder.Data.Model.Names.Camel)
+//	err := os.Mkdir(routingPath, os.ModePerm)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	builder.Build(config.GetTemplatePath("routing"), fmt.Sprintf("%s/init.go", routingPath))
+//}
+//
+//func (s *Server) createManyService(builder *Builder) {
+//	apiPath := fmt.Sprintf("%s/%s/%s", *s.Path, *s.Api, *builder.Data.Model.Names.Camel)
+//	err := os.Mkdir(apiPath, os.ModePerm)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	builder.Build(config.GetTemplatePath("initMany"), fmt.Sprintf("%s/init.go", apiPath))
+//	builder.Build(config.GetTemplatePath("serviceMany"), fmt.Sprintf("%s/handler.go", apiPath))
+//	builder.Build(config.GetTemplatePath("repositoryMany"), fmt.Sprintf("%s/service.go", apiPath))
+//}
 
-	err = os.Mkdir(fmt.Sprintf("%s/%s/%s", *s.Path, *s.Routing, *names.CamelCase), os.ModePerm)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-func (s *Server) createRouting(name *nameBuilder.NameFormats) {
-	helpers.WriteFile(fmt.Sprintf("%s/%s/%s/init.go", *s.Path, *s.Routing, *name.CamelCase), routing.Fabric(name))
-}
-
-func (s *Server) createManyService(names *nameBuilder.NameFormats) {
-	err := os.Mkdir(fmt.Sprintf("handlers/%s", *names.CamelCase), os.ModePerm)
-	if err != nil {
-		log.Fatal(err)
-	}
-	helpers.WriteFile(fmt.Sprintf("%s/%s/init.go", *s.Path, *names.CamelCase), initMany.Fabric(names))
-	helpers.WriteFile(fmt.Sprintf("%s/%s/handler.go", *s.Path, *names.CamelCase), serviceMany.Fabric(names))
-	helpers.WriteFile(fmt.Sprintf("%s/%s/service.go", *s.Path, *names.CamelCase), repositoryMany.Fabric(names))
-}
-
-func (s *Server) Format() {
+func (s *Module) Format() {
 	_, err := exec.Command(*s.FormatCommand.Command, s.FormatCommand.Params...).Output()
 	if err != nil {
 		log.Fatal(err)

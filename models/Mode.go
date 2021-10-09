@@ -3,15 +3,15 @@ package models
 type Mode string
 
 const (
-	Builder  Mode = "Builder"
-	Migrator Mode = "Migrator"
+	BuilderMode  Mode = "Builder"
+	MigratorMode Mode = "Migrator"
 )
 
 func (mode Mode) String() string {
 	switch mode {
-	case Builder:
+	case BuilderMode:
 		return "Builder"
-	case Migrator:
+	case MigratorMode:
 		return "Migrator"
 	}
 	return "Builder"
@@ -20,13 +20,13 @@ func (mode Mode) String() string {
 func WriteMode(mode string) Mode {
 	switch mode {
 	case "Builder":
-		return Builder
+		return BuilderMode
 	case "Migrator":
-		return Migrator
+		return MigratorMode
 	}
-	return Builder
+	return BuilderMode
 }
 
 func GetModels() []string {
-	return []string{Builder.String(), Migrator.String()}
+	return []string{BuilderMode.String(), MigratorMode.String()}
 }
