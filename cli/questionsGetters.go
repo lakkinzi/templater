@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"github.com/AlecAivazis/survey/v2"
 	"templater/config"
 	"templater/models"
@@ -30,6 +31,7 @@ func getMode() *survey.Select {
 	return &survey.Select{Message: "Choose mode:", Options: models.GetModels()}
 }
 
-func getWorks(works models.Works) *survey.MultiSelect {
-	return &survey.MultiSelect{Message: "Choose works:", Options: works.GetNames()}
+func getWorks(module *models.Module) *survey.MultiSelect {
+	message := fmt.Sprintf("Choose works for module: %s", *module.Name)
+	return &survey.MultiSelect{Message: message, Options: module.Works.GetNames()}
 }

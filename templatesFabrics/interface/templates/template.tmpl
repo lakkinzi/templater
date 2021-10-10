@@ -1,0 +1,6 @@
+export default interface I{{.Model.Names.PascalSingular}} {
+  id?: string;
+  {{ range .Model.Properties }}
+     {{.Names.CamelSingular}}: string;
+  {{end}}
+}

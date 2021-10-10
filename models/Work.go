@@ -3,7 +3,6 @@ package models
 import (
 	"fmt"
 	"path/filepath"
-	"strings"
 	"templater/config"
 )
 
@@ -40,20 +39,19 @@ func (works Works) SetDoing(actualWorks []string) {
 
 func (work *Work) build(builder *Builder, projectPath *string) {
 	work.setFileName(builder)
-	work.Path = strings.Replace(work.Path, "%model", *builder.Data.Model.Names.CamelSingular, -1)
+	builder.Data.Model.SetNameToPlaceholder(&work.Path)
 	path := filepath.Join(*projectPath, work.Path)
 
 	builder.Build(config.GetTemplatePath(work.Name), path, work.FileName)
 }
 
 func (work *Work) setFileName(builder *Builder) {
-	if work.FileName != "%model" {
+	if work.FileName == "" {
 		work.FileName = fmt.Sprintf("%s.%s", work.Name, work.Extension)
 	} else {
-		fileName := strings.Replace(work.FileName, "%model", *builder.Data.Model.Names.PascalSingular, -1)
-		work.FileName = fmt.Sprintf("%s.%s", fileName, work.Extension)
+		builder.Data.Model.SetNameToPlaceholder(&work.FileName)
+		work.FileName = fmt.Sprintf("%s.%s", work.FileName, work.Extension)
 	}
-
 }
 
 func (works Works) Build(builder *Builder, projectPath *string) {

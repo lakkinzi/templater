@@ -1,0 +1,14 @@
+export default class {{.Model.Names.PascalSingular}} implements I{{.Model.Names.PascalSingular}} {
+  id?: string;
+  {{ range .Model.Properties }}
+     {{.Names.CamelSingular}}: string;
+  {{end}}
+
+  constructor({{.Model.Names.CamelSingular}}?: I{{.Model.Names.PascalSingular}}) {
+    if (!{{.Model.Names.CamelSingular}}) return;
+    this.id = {{.Model.Names.CamelSingular}}.id;
+      {{ range .Model.Properties }}
+         this.{{.Names.CamelSingular}} = {{$.Model.Names.CamelSingular}}.{{.Names.CamelSingular}};
+      {{end}}
+  }
+}

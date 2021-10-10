@@ -66,7 +66,7 @@ func writeServerBuildOperations(options *models.Options) {
 
 func writeWorks(module *models.Module) {
 	var works []string
-	err := survey.AskOne(getWorks(module.Works), &works)
+	err := survey.AskOne(getWorks(module), &works)
 	if err != nil {
 		log.Fatal(err)
 	}

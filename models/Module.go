@@ -6,6 +6,7 @@ import (
 )
 
 type Module struct {
+	Name          *string  `json:"name"`
 	Path          *string  `json:"path"`
 	FormatCommand *Command `json:"formatCommand"`
 	Works         Works    `json:"works"`
@@ -68,6 +69,9 @@ func (s *Module) setWorks(builder *Builder) {
 //}
 
 func (s *Module) Format() {
+	if s.FormatCommand == nil {
+		return
+	}
 	_, err := exec.Command(*s.FormatCommand.Command, s.FormatCommand.Params...).Output()
 	if err != nil {
 		log.Fatal(err)
