@@ -1,13 +1,5 @@
 package {{.Model.Names.CamelSingular}}
 
-import (
-"github.com/gin-gonic/gin"
-"github.com/uptrace/bun"
-handler "mdgkb/tsr-register/tsr-tegister-server-v1/handlers/{{.Model.Names.CamelSingular}}"
-"mdgkb/tsr-tegister-server-v1/helpers"
-_ "github.com/go-pg/pg/v10/orm"
-)
-
 // Init func
 func Init(r *gin.RouterGroup, db *bun.DB) {
 var h = handler.CreateHandler(db)

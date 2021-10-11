@@ -25,7 +25,7 @@ _, err = r.db.NewDelete().Model(&models.{{.Model.Names.PascalSingular}}{}).Where
 return err
 }
 
-func (r *Repository) update(item *models.{{.Model.Names.PascalPlural}}) (err error) {
+func (r *Repository) update(item *models.{{.Model.Names.PascalSingular}}) (err error) {
 _, err = r.db.NewUpdate().Model(item).Where("id = ?", item.ID).Exec(r.ctx)
 return err
 }

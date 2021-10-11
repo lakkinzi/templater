@@ -1,0 +1,6 @@
+CREATE TABLE {{.Model.Names.SnakePlural}} (
+    id uuid DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY,
+    {{ range .Model.Properties }}
+        {{.Names.SnakeSingular}} varchar,
+    {{end}}
+);
