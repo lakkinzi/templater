@@ -9,7 +9,7 @@ Delete(c *gin.Context) error
 }
 
 type IService interface {
-GetAll() ([]*models.{{.Model.Names.PascalPlural}}, error)
+GetAll() (models.{{.Model.Names.PascalPlural}}, error)
 Get(*string) (*models.{{.Model.Names.PascalSingular}}, error)
 Create(*models.{{.Model.Names.PascalSingular}}) error
 Update(*models.{{.Model.Names.PascalSingular}}) error
